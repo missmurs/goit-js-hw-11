@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const KEY = '41107033-20f612c52ee0102e5a994dfd8';
+const KEY = '41310960-a447b99d1b40cb87b689e5a50';
 const URL = 'https://pixabay.com/api/';
 
 export class NewsApiServer {
