@@ -6,7 +6,7 @@ const URL = 'https://pixabay.com/api/';
 export class NewsApiServer {
   constructor() {
     this.searchQuery = '';
-    this.page = 1;
+
     this.per_page = 40;
     this.totalImgs = 0;
   }

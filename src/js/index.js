@@ -93,7 +93,7 @@ function pageScrolling() {
 
 function infinityScroll() {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-  if (scrollTop + clientHeight >= scrollHeight - 5) {
+  if (scrollTop + clientHeight >= scrollHeight - 1) {
     onLoadMore();
   }
 }
