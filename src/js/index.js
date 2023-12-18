@@ -36,33 +36,35 @@ function onSubmitForm(evt) {
   fetchAndRender();
 }
 
-function fetchAndRender() {
-  newsApiServer
-    .fetchImages()
-    .then(data => {
-      if (data.totalHits === 0) {
-        Notiflix.Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
+async function fetchAndRender() {
+  try {
+    const data = await newsApiServer.fetchImages();
+
+    if (data.totalHits === 0) {
+      Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    } else {
+      Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+
+      appendPhotoMarkup(data);
+      pageScrolling();
+      lightbox.refresh();
+
+      if (data.totalHits <= newsApiServer.totalImgs) {
+        Notiflix.Notify.info(
+          "We're sorry, but you've reached the end of search results."
         );
+        window.removeEventListener('scroll', infinityScroll);
       } else {
-        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-
-        appendPhotoMarkup(data);
-        pageScrolling();
-        lightbox.refresh();
-
-        if (data.totalHits <= newsApiServer.totalImgs) {
-          Notiflix.Notify.info(
-            "We're sorry, but you've reached the end of search results."
-          );
-          window.removeEventListener('scroll', infinityScroll);
-        } else {
-          window.addEventListener('scroll', infinityScroll);
-        }
+        window.addEventListener('scroll', infinityScroll);
       }
-    })
-    .catch(error => console.error(error.message))
-    .finally(() => loader.classList.add('hidden'));
+    }
+  } catch (error) {
+    console.error(error.message);
+  } finally {
+    loader.classList.add('hidden');
+  }
 }
 
 function onLoadMore() {
